@@ -31,6 +31,7 @@ module.exports = function (config, cb) {
         name: 'v' + pkg.version,
         tag_name: 'v' + pkg.version,
         target_commitish: hash,
+        prerelease: !!options.prerelease,
         draft: !!options.debug,
         body: log
       }

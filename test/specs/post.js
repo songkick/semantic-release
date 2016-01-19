@@ -56,6 +56,20 @@ test('full post run', function (t) {
     })
   })
 
+  t.test('in prerelease mode', function (tt) {
+    post({
+      options: {prerelease: true},
+      pkg: pkg,
+      plugins: plugins
+    }, function (err, published, release) {
+      tt.error(err)
+      tt.is(published, true)
+      tt.match(release, defaults({prerelease: true}, defaultRelease))
+
+      tt.end()
+    })
+  })
+
   t.test('production', function (tt) {
     post({
       options: {githubToken: 'yo'},
