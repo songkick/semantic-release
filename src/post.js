@@ -45,10 +45,10 @@ module.exports = function (config, cb) {
         token: options.githubToken
       })
 
-      github.releases.createRelease(release, function (err) {
+      github.releases.createRelease(release, function (err, response) {
         if (err) return cb(err)
 
-        cb(null, true, release)
+        cb(null, true, release, response)
       })
     })
   })

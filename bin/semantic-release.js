@@ -17,6 +17,7 @@ normalizeData(pkg)
 var knownOptions = {
   branch: String,
   debug: Boolean,
+  json: Boolean,
   'github-token': String,
   'github-url': String,
   'analyze-commits': [path, String],
@@ -151,13 +152,17 @@ npmconf.load({}, function (err, conf) {
     } else if (options.argv.remain[0] === 'post') {
       log.verbose('post', 'Running post-script.')
 
-      require('../src/post')(config, function (err, published, release) {
+      require('../src/post')(config, function (err, published, release, githubRelease) {
         if (err) {
           log.error('post', 'Failed to publish release notes.', err)
           process.exit(1)
         }
 
         log.verbose('post', (published ? 'Published' : 'Generated') + ' release notes.', release)
+
+        if (options.json) {
+          process.stdout.write(JSON.stringify(githubRelease, null, 2))
+        }
       })
     } else {
       log.error('post', 'Command "' + options.argv.remain[0] + '" not recognized. User either "pre" or "post"')
